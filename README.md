@@ -1,4 +1,11 @@
 ## Introduction
+This fork (from: https://github.com/Shawn1993/cnn-text-classification-pytorch) adds Cricket
+Commentary dataset. The task is to classify a commentary text to the outcome. For example:
+```
+[Text]  full and fast and too much for any tailender
+[Label] out
+```
+
 This is the implementation of Kim's [Convolutional Neural Networks for Sentence Classification](https://arxiv.org/abs/1408.5882) paper in PyTorch.
 
 1. Kim's implementation of the model in Theano:

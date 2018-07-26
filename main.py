@@ -8,7 +8,7 @@ import torchtext.datasets as datasets
 import model
 import train
 import mydatasets
-
+import utils
 
 parser = argparse.ArgumentParser(description='CNN text classificer')
 # learning
@@ -66,11 +66,19 @@ def mr(text_field, label_field, **kargs):
     return train_iter, dev_iter
 
 
+def cricket(text_field, label_field, **kargs):
+    train_data, dev_data = mydatasets.CricketCommentaryDataset.splits(text_field, label_field)
+    text_field.build_vocab(train_data, dev_data)
+    label_field.build_vocab(train_data, dev_data)
+    train_iter, dev_iter = data.Iterator.splits((train_data, dev_data), batch_sizes=(args.batch_size, len(dev_data)), **kargs)
+    return train_iter, dev_iter
+
 # load data
 print("\nLoading data...")
-text_field = data.Field(lower=True)
+text_field = data.Field(lower=True, preprocessing=data.Pipeline(utils.clean_str))
 label_field = data.Field(sequential=False)
-train_iter, dev_iter = mr(text_field, label_field, device=-1, repeat=False)
+train_iter, dev_iter = cricket(text_field, label_field, device=-1, repeat=False, sort=False)
+# train_iter, dev_iter = mr(text_field, label_field, device=-1, repeat=False)
 # train_iter, dev_iter, test_iter = sst(text_field, label_field, device=-1, repeat=False)
 
 
